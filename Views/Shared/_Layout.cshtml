@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @{ 
+        var Id = Session["UserId"];
+    }
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Inventory</a>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                @if (Session["UserRole"] == "Manager")
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("Dashboard", "Index", "Manager", new { Id }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("My Items", "Index","Employee", new { Id }, new { @class = "nav-link" })
+                    </li>
+                }
+                else if (Session["UserRole"] == "Employee")
+                {
+                    <li class="nav-item active">
+                        @Html.ActionLink("My Items", "Index", new { Id }, new { @class = "nav-link" })
+                    </li>
+                }
+
+
+            </ul>
+            <div class="nav">
+                @if (Session["UserId"] != null)
+                {
+                    <h5>Hello! @Session["UserName"] </h5>
+                    @Html.ActionLink("Logout", "Logout", "Home", null, new { @class = "nav-link pull-right navTextColor" })
+                }
+                else
+                {
+                    @Html.ActionLink("Register", "Register", "Home", null, new { @class = "nav-link pull-right navTextColor" })
+
+                    @Html.ActionLink("Login", "Index", null, new { @class = "nav-link pull-right navTextColor" })
+
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Inventory Management</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/jquery.validate.min.js")
+    @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.min.js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
