@@ -48,9 +48,10 @@ namespace InventoryManagement.Controllers
 
         [HttpGet]
         public ActionResult Edit(int id)
-        {
+        
+        {   var MgrId = Convert.ToInt32(Session["UserId"]);
             var Item = _context.Items.SingleOrDefault(i => i.Id == id);
-            var empList = _context.Employees.Where(e => e.ManagerId == 1).ToList();
+            var empList = _context.Employees.Where(e => e.ManagerId == MgrId).ToList();
             var viewModel = new ItemViewModel
             {
                 item = Item,
